@@ -33,7 +33,7 @@ class Server{
     }
 
     routes(){
-        this.app.use(this.usuariosPath , require('../routes/usarios'));
+        this.app.use(this.usuariosPath , require('../routes/usuarios'));
     }
     listen(){
         this.app.listen(this.port,()=>{
