@@ -1,7 +1,7 @@
 const {model,Schema} = require('mongoose');
 
 
-
+//Esquema para la creacion de usuarios.
 const UsuarioSchema = Schema({
     nombre:{
         type: String,
@@ -35,8 +35,11 @@ const UsuarioSchema = Schema({
 
 });
 
+
+//esto es para retirar la password para que no sea vista en el front end.
 UsuarioSchema.methods.toJSON = function(){
-    const {__v,password, ...usuario} = this.toObject();
+    const {__v,password,_id,...usuario} = this.toObject();
+    usuario.uid = _id;
     return usuario;
 }
 

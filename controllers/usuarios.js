@@ -5,7 +5,7 @@ const bcryptjs = require('bcryptjs');
 
 
 
-const usuariosGet = async (req, res) => {
+const usuariosGet = async (req = request, res = response) => {
 
   const {limite = 0 ,desde = 0} = req.query;
    const query = {estado:true};
@@ -23,7 +23,7 @@ const usuariosGet = async (req, res) => {
     });
   }
 
-  const usuariosPost = async (req, res) => {
+  const usuariosPost = async (req = request, res = response) => {
 
     const {nombre, correo, password, rol} = req.body;
     const usuario = new Usuario({nombre,correo,password,rol});
@@ -39,7 +39,7 @@ const usuariosGet = async (req, res) => {
     });
   }
 
-  const usuariosPut = async (req, res) => {
+  const usuariosPut = async (req = request, res = response) => {
 
     const {id} = req.params;
     const {_id,password,google,correo, ...resto} =  req.body;
@@ -55,19 +55,24 @@ const usuariosGet = async (req, res) => {
     res.json(usuario);
   }
 
-  const usuariosPatch = (req, res) => {
+  const usuariosPatch = (req = request, res = response) => {
     res.json({
         msg: 'patch api - controlador'
     });
   }
 
-  const usuariosDelete = async (req, res) => {
+  const usuariosDelete = async (req = request, res = response) => {
     const {id} = req.params;
+
+   
 
     //borrar fisicamente
     // const usuario = await Usuario.findByIdAndDelete(id);
     //esto es una forma de borrarlo pero que se mantenga en tu base de datos para mantener la integridad de la misma
     const usuario = await Usuario.findByIdAndUpdate(id,{estado: false});
+    //aqui se lee el usuario que se autentico con su jwt
+    // const usuarioAutenticado = req.usuario;
+
     res.json(usuario);
   }
 

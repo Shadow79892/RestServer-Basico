@@ -24,11 +24,18 @@ const existeUsuarioPorId = async (id)=>{
         throw new Error(`El id no existe ${id}`);
     }
 }
+const estadoUsuario = async (id)=>{
+    const estadoUsuario = await Usuario.findById(id);
 
+    if(!estadoUsuario.estado){
+        throw new Error(`El usuario ya no existe`);
+    }
+}
 
 module.exports = {
     esRoleValido,
     existeEmail,
     existeUsuarioPorId,
+    estadoUsuario
     
 }
