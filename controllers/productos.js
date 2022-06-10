@@ -6,7 +6,7 @@ const {Producto} =  require('../models');
 
 
 
-const obtenerProducto = async(req = request,res = response)=>{
+const obtenerProductos = async(req = request,res = response)=>{
 
 
     const query =  {estado:true};
@@ -24,7 +24,7 @@ const obtenerProducto = async(req = request,res = response)=>{
 
 }
 
-const obtenerProductos = async(req = request,res = response)=>{
+const obtenerProducto = async(req = request,res = response)=>{
 
 
     const {id} = req.params;
@@ -36,9 +36,10 @@ const obtenerProductos = async(req = request,res = response)=>{
 
 const crearProducto = async(req = request,res = response)=>{
 
-    const {nombre,precio,categoria,usuario,descripcion,disponible} =  req.body;
+    const {estado,usuario,...body} =  req.body;
+    const nombre  = body.nombre.toUpperCase();
 
-    const productoDB =  await Producto.findOne({nombre});
+    const productoDB =  await Producto.findOne({ nombre });
 
     if(productoDB){
         return res.status(400).json({
@@ -47,12 +48,9 @@ const crearProducto = async(req = request,res = response)=>{
     }
 
     const data = {
+        ...body,
         nombre,
-        precio,
-        categoria,
         usuario: req.usuario._id,
-        descripcion,
-        disponible
     }
 
 

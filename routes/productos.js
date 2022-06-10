@@ -12,14 +12,14 @@ const router = Router();
 
 
 
-router.get('/',obtenerProducto);
+router.get('/',obtenerProductos);
 
 router.get('/:id',[
     check('id','No es un id valido').isMongoId(),
     check('id').custom(existeProductoPorId),
     check('id').custom(estadoProducto),
     validarCampos
-],obtenerProductos);
+],obtenerProducto);
 
 
 router.post('/',[
