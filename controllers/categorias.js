@@ -3,27 +3,29 @@ const {Categoria} =  require('../models');
 
 
 
-
-
-//obtener categorias - paginado - total - populate
-
 const obtenerCategorias = async (req = request, res = response)=>{
 
-    const query = {estado: true}
+    const query = {estado: true};
+
     const [total,categorias] = await Promise.all([
         Categoria.countDocuments(query),
+        //populate mongoose.
         Categoria.find(query).populate('usuario', 'nombre')
       ]);
+
       res.json({
           total,
           categorias
       })
 }
 
-//obtener categoria - populate solo un arreglo con la categoria
+
 const obtenerCategoriaId = async(req = request, res = response) =>{
     const {id} = req.params;
+
+
     const categoria = await Categoria.findById(id).populate('usuario','nombre');
+    
       res.json(categoria);
 }
 

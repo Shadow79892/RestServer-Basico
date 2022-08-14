@@ -18,7 +18,7 @@ const buscarUsuarios = async (termino = '', res = response)=>{
         return res.json({
             //si el usuario existe regresa el arreglo con el usuario si no existe regresa un arreglo vacio.
             results: (usuario) ? [usuario] : []
-        })
+        });
     }
 
     const regex = new RegExp(termino,'i');
@@ -82,7 +82,7 @@ const buscar = async(req = request, res = response)=>{
 
         return res.status(400).json({
             msg: `Las colecciones permitidas son ${coleccionesPermitidas}`
-        })
+        });
     }
 
 

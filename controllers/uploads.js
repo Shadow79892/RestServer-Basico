@@ -4,9 +4,11 @@ const fs = require('fs');
 const cloudinary = require('cloudinary').v2
 cloudinary.config(process.env.CLOUDINARY_URL);
 
+
 const { request, response } = require("express");
 const { subirArchivo } = require("../helpers/subir-archivo");
 const {Usuario,Producto} = require('../models');
+
 
 const cargarArchivos = async (req = request,res = response)=>{
 
@@ -86,20 +88,25 @@ const mostrarImagen = async (req, res = response) =>{
 
 
     case 'usuarios':
+
       modelo = await Usuario.findById(id);
       if(!modelo){
         return res.status(400).json({
           msg: `No existe un usuario con el id ${id}`
         })}
+
       break;
       
 
       case 'productos':
+
         modelo = await Producto.findById(id);
       if(!modelo){
         return res.status(400).json({
           msg: `No existe un producto con el id ${id}`
-        })}
+        });
+      }
+
         break;
 
 
@@ -111,7 +118,8 @@ const mostrarImagen = async (req, res = response) =>{
   try{
     if(modelo.img){
 
-      const pathImagen = path.join(__dirname, '../uploads', coleccion, modelo.img)
+      const pathImagen = path.join(__dirname, '../uploads', coleccion, modelo.img);
+      
       if(fs.existsSync(pathImagen)){
        return res.sendFile(pathImagen);
       }

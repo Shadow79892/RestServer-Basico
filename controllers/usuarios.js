@@ -9,6 +9,7 @@ const usuariosGet = async (req = request, res = response) => {
 
   const {limite = 0 ,desde = 0} = req.query;
    const query = {estado:true};
+
   //esto es una desesctructuracion de arreglos para asignarle nombres a las posiciones.
   //y ejecutar dos await de forma que no se tenga que esperar a que termine uno para que el otro inicie y sea mas optimo.
     const [total,usuarios] = await Promise.all([
@@ -69,7 +70,7 @@ const usuariosGet = async (req = request, res = response) => {
     //borrar fisicamente
     // const usuario = await Usuario.findByIdAndDelete(id);
     //esto es una forma de borrarlo pero que se mantenga en tu base de datos para mantener la integridad de la misma
-    const usuario = await Usuario.findByIdAndUpdate(id,{estado: false});
+    const usuario = await Usuario.findByIdAndUpdate(id,{estado: false},{new:true});
     //aqui se lee el usuario que se autentico con su jwt
     // const usuarioAutenticado = req.usuario;
 

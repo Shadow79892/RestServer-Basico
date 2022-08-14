@@ -16,46 +16,76 @@ const {validarCampos,validarJWT,validarRol,tieneRol} = require('../middlewares')
 //rutas//
 const router = Router();
 
+//en la segunda posicion se pueden definir los middlewares si asi se desea y si manda varios se manda como un arreglo.
 router.get('/',[
     //validacion de si es un numero el limite y desde.
     query('limite','El valor del limite debe ser numerico')
     .isNumeric()
     .optional(),
+
     query('desde',"El valor de desde deber ser numerico")
     .isNumeric()
     .optional(),
+
     validarCampos
+
 ], usuariosGet);
 
 
-//en la segunda posicion se pueden definir los middlewares si asi se desea y si manda varios se manda como un arreglo.
+
 router.post('/',[
+    validarJWT,
+
+    tieneRol('ADMIN_ROLE'),
+
     //el check crea todos los errores en la request no los tira de una vez.
     body('nombre','El nombre es obligatorio').not().isEmpty(),
+
     body('correo','El correo no es valido').isEmail(),
+
     body('correo').custom(existeEmail),
+
     body('password','El password es obligatorio y debe de ser mas de 6 caracteres').isLength({min: 6}),
+
     // check('rol','No es un rol valido').isIn(['ADMIN_ROLE','USER_ROLE']),
    body('rol').custom(esRoleValido),
+
     validarCampos
+
 ], usuariosPost);
 
+
 router.put('/:id',[
+    validarJWT,
+
+    tieneRol('ADMIN_ROLE'),
+
     check('id', 'No es un ID valido').isMongoId(),
+
     check('id').custom(existeUsuarioPorId).custom(estadoUsuario),
-    body('rol').custom(esRoleValido),
+
+    body('rol').optional().custom(esRoleValido),
+
     validarCampos
+
 ], usuariosPut);
+
 
 router.patch('/', usuariosPatch);
 
+
 router.delete('/:id',[
     validarJWT,
+
     // validarRol,
-    tieneRol('ADMIN_ROLE','VENTAS_ROLE'),
+    tieneRol('ADMIN_ROLE'),
+
     check('id', 'No es un ID valido').isMongoId(),
+
     check('id').custom(existeUsuarioPorId).custom(estadoUsuario),
+
     validarCampos
+
 ], usuariosDelete);
   
 

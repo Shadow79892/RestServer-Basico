@@ -1,8 +1,9 @@
-const { response } = require("express");
 const bcryptjs =  require('bcryptjs');
+const { response } = require("express");
+
 const Usuario = require('../models/usuario');
 const {generarJWT} =  require('../helpers/generarjwt');
-const {googleVerify} = require('../helpers/google-verify')
+const {googleVerify} = require('../helpers/google-verify');
 
 
 const login = async (req, res = response)=>{
@@ -10,7 +11,6 @@ const login = async (req, res = response)=>{
     const {correo,password} = req.body;
 
     try{
-
         //verificar si el email existe
         const usuario = await Usuario.findOne({correo});
         if(!usuario){
@@ -35,8 +35,6 @@ const login = async (req, res = response)=>{
 
         //genera el JWT
         const token = await generarJWT(usuario.id);
-
-
 
         res.json({
             usuario,
@@ -75,7 +73,7 @@ const googleSignIn = async(req, res)=>{
            usuario =  new Usuario(data);
            await usuario.save();
        }
-       //si el usuario tiene el estado en false en la db
+       //verificacion de si el usuario esta borrado.
        if(!usuario.estado){
            return res.status(401).json({
                msg: 'Hable con el administrador, usuario bloqueado'
